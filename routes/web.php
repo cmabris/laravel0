@@ -13,7 +13,7 @@ Route::get('usuarios', function () {
 });*/
 
 Route::get('usuarios/nuevo', function () {
-    return 'Creando un nuevo usuario';
+    return 'Creando nuevo usuario';
 });
 
 Route::get('usuarios/{id}', function ($id) {
@@ -27,7 +27,7 @@ Route::get('saludo/{name}/{nickname?}', function ($name, $nickname = null) {
     return 'Bienvenido ' . $name . '.';*/
 
     return $nickname
-        ? 'Bienvenido ' . $name . '. Tu apodo es ' . $nickname
-        : 'Bienvenido ' . $name . '.';
+        ? 'Bienvenido ' . ucfirst($name) . '. Tu apodo es ' . $nickname
+        : 'Bienvenido ' . ucfirst($name) . '.';
 
 });
