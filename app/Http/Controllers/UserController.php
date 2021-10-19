@@ -8,7 +8,18 @@ class UserController extends Controller
 {
     public function index()
     {
-        return '<h1>Usuarios/as/es</h1>';
+        $users = [
+            'Joel',
+            'Ellie',
+            'Tess',
+            'Tommy',
+            'Bill',
+            '<script>alert("Click aquí")</script>',
+        ];
+
+        $title = 'Usuarios';
+
+        return view('users')->with(compact('users', 'title'));
     }
 
     public function create()
