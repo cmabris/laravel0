@@ -16,7 +16,7 @@ class UserController extends Controller
 
         $title = 'Usuarios';
 
-        return view('users')->with(compact('users', 'title'));
+        return view('users.index')->with(compact('users', 'title'));
     }
 
     public function create()
@@ -26,6 +26,6 @@ class UserController extends Controller
 
     public function show($id)
     {
-        return 'Mostrando detalles del usuario: ' . $id;
+        return view('users.show', compact('id'));
     }
 }
