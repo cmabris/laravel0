@@ -27,7 +27,8 @@ class AddProfessionIdToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropForeign(['profession_id']);
+            $table->dropColumn('profession_id');
         });
     }
 }
