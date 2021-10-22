@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
             'name' => 'Pepe Pérez',
             'email' => 'pepe@mail.es',
             'password' => bcrypt('123456'),
+            'profession_id' => DB::table('professions')->whereTitle('Desarrollador Back-End')->value('id')
         ]);
     }
 }
