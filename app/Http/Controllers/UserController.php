@@ -27,12 +27,12 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        if (empty($request->name)) {
-            return redirect()->route('users.create')
-                ->withErrors([
-                    'name' => 'El campo nombre es obligatorio'
-                ]);
-        }
+        $data = $request->validate([
+            'name' => 'required'
+        ], [
+            'name.required' => 'El campo nombre es obligatorio'
+        ]);
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,

@@ -85,17 +85,14 @@ class UsersModuleTest extends TestCase
     /** @test */
     public function the_name_is_required()
     {
-        $this->withoutExceptionHandling();
-
-        $this->post('usuarios', [
+        $this->from('usuarios/crear')
+            ->post('usuarios', [
             'name' => '',
             'email' => 'emilio@mail.es',
             'password' => '123456'
         ])->assertRedirect('usuarios/crear')
             ->assertSessionHasErrors(['name' => 'El campo nombre es obligatorio']);
 
-        $this->assertDatabaseMissing('users', [
-            'email' => 'emilio@mail.es',
-        ]);
+        $this->assertEquals(0, User::count());
     }
 }
