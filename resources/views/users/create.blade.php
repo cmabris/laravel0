@@ -33,6 +33,9 @@
         <br>
         <label for="password">Contraseña: </label>
         <input type="password" name="password">
+        @if($errors->has('password'))
+            <p>{{ $errors->first('password') }}</p>
+        @endif
         <br>
         <button type="submit">Crear usuario</button>
     </form>
