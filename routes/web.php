@@ -7,6 +7,7 @@ Route::get('/', function () {
 Route::get('usuarios', 'UserController@index')->name('users.index');
 Route::get('usuarios/crear', 'UserController@create')->name('users.create');
 Route::post('usuarios', 'UserController@store')->name('users.store');
+Route::get('usuarios/{user}/editar', 'UserController@edit')->name('users.edit');
 Route::get('usuarios/{user}', 'UserController@show')
     ->where('id', '[0-9]+')->name('users.show');
 
