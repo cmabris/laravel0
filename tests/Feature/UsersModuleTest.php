@@ -69,13 +69,8 @@ class UsersModuleTest extends TestCase
     /** @test */
     public function it_creates_a_new_user()
     {
-        $this->post('usuarios', [
-            'name' => 'Pepe',
-            'email' => 'pepe@mail.es',
-            'password' => '123456',
-            'bio' => 'Programador de Laravel y Vue.js',
-            'twitter' => 'https://twitter.com/pepe'
-        ])->assertRedirect('usuarios');
+        $this->post('usuarios', $this->getValidData())
+            ->assertRedirect('usuarios');
 
         $this->assertCredentials([
             'name' => 'Pepe',
@@ -86,6 +81,27 @@ class UsersModuleTest extends TestCase
         $this->assertDatabaseHas('user_profiles', [
             'bio' => 'Programador de Laravel y Vue.js',
             'twitter' => 'https://twitter.com/pepe',
+            'user_id' => User::findByEmail('pepe@mail.es')->id,
+        ]);
+    }
+
+    /** @test */
+    public function the_twitter_field_is_optional()
+    {
+        $this->withoutExceptionHandling();
+        $this->post('usuarios', $this->getValidData([
+            'twitter' => null
+        ]))->assertRedirect('usuarios');
+
+        $this->assertCredentials([
+            'name' => 'Pepe',
+            'email' => 'pepe@mail.es',
+            'password' => '123456'
+        ]);
+
+        $this->assertDatabaseHas('user_profiles', [
+            'bio' => 'Programador de Laravel y Vue.js',
+            'twitter' => null,
             'user_id' => User::findByEmail('pepe@mail.es')->id,
         ]);
     }
@@ -319,5 +335,16 @@ class UsersModuleTest extends TestCase
         ]);
 
         //$this->assertSame(0, User::count());
+    }
+
+    public function getValidData(array $custom = [])
+    {
+        return array_filter(array_merge([
+            'name' => 'Pepe',
+            'email' => 'pepe@mail.es',
+            'password' => '123456',
+            'bio' => 'Programador de Laravel y Vue.js',
+            'twitter' => 'https://twitter.com/pepe'
+        ], $custom));
     }
 }
