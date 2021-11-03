@@ -44,22 +44,6 @@
             @endforeach
             </tbody>
         </table>
-
-
-        <ul>
-            @foreach ($users as $user)
-                <li>
-                    {{ $user->name }}, {{ $user->email }}
-                    <a href="{{ route('users.show', $user->id) }}">Ver detalles</a> |
-                    <a href="{{ route('users.edit', $user) }}">Editar</a> |
-                    <form action="{{ route('users.destroy', $user) }}" method="POST">
-                        {{ csrf_field() }}
-                        {{ method_field('DELETE') }}
-                        <button type="submit">Eliminar</button>
-                    </form>
-                </li>
-            @endforeach
-        </ul>
     @else
         <p>No hay usuarios registrados</p>
     @endif

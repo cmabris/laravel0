@@ -72,13 +72,21 @@ class UsersModuleTest extends TestCase
         $this->post('usuarios', [
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
-            'password' => '123456'
+            'password' => '123456',
+            'bio' => 'Programador de Laravel y Vue.js',
+            'twitter' => 'https://twitter.com/pepe'
         ])->assertRedirect('usuarios');
 
         $this->assertCredentials([
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
             'password' => '123456'
+        ]);
+
+        $this->assertDatabaseHas('user_profiles', [
+            'bio' => 'Programador de Laravel y Vue.js',
+            'twitter' => 'https://twitter.com/pepe',
+            'user_id' => User::findByEmail('pepe@mail.es')->id,
         ]);
     }
 
