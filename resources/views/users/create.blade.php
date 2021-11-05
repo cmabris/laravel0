@@ -56,15 +56,27 @@
                     </select>
                 </div>
 
-                <button type="submit">Crear usuario</button>
+                <h5>Habilidades</h5>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                    <label class="form-check-label" for="inlineCheckbox2">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" disabled>
+                    <label class="form-check-label" for="inlineCheckbox3">3 (disabled)</label>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit">Crear usuario</button>
+                    <a href="{{ route('users.index') }}" class="btn btn-link">Regresar al listado de usuarios</a>
+                </div>
             </form>
         </div>
-    </div>
-
-    <div class="card-footer">
-        <p>
-            <a href="{{ route('users.index') }}">Regresar al listado de usuarios</a>
-        </p>
     </div>
 
 @endsection
