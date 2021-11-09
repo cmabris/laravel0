@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->is_admin;
+        return $this->role === 'admin';
     }
 
     public static function findByEmail($email)
@@ -56,11 +56,15 @@ class User extends Authenticatable
     public static function createUser($data)
     {
         DB::transaction(function () use ($data) {
-            $user = User::create([
+            $user = new User([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
             ]);
+
+            $user->role = $data['role'];
+
+            $user->save();
 
             $user->profile()->create([
                 'bio' => $data['bio'],

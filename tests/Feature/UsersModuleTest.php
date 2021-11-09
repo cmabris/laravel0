@@ -94,6 +94,7 @@ class UsersModuleTest extends TestCase
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
             'password' => '123456',
+            'role' => 'user'
         ]);
 
         $user = User::findByEmail('pepe@mail.es');
@@ -434,7 +435,8 @@ class UsersModuleTest extends TestCase
             'password' => '123456',
             'profession_id' => $this->profession->id,
             'bio' => 'Programador de Laravel y Vue.js',
-            'twitter' => 'https://twitter.com/pepe'
+            'twitter' => 'https://twitter.com/pepe',
+            'role' => 'user',
         ], $custom);
     }
 }

@@ -29,6 +29,7 @@ class CreateUserRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
+            'role' => '',
             'bio' => 'required',
             'twitter' => 'nullable|present|url',
             'profession_id' => [
@@ -38,7 +39,7 @@ class CreateUserRequest extends FormRequest
             'skills' => [
                 'array',
                 Rule::exists('skills', 'id'),
-            ]
+            ],
         ];
     }
 
