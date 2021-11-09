@@ -33,7 +33,12 @@ class CreateUserRequest extends FormRequest
             'twitter' => 'nullable|present|url',
             'profession_id' => [
                 'nullable', 'present',
-                Rule::exists('professions','id')->whereNull('deleted_at')],
+                Rule::exists('professions','id')->whereNull('deleted_at')
+            ],
+            'skills' => [
+                'array',
+                Rule::exists('skills', 'id'),
+            ]
         ];
     }
 
