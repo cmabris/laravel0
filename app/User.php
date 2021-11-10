@@ -62,7 +62,7 @@ class User extends Authenticatable
                 'password' => bcrypt($data['password']),
             ]);
 
-            $user->role = $data['role'];
+            $user->role = $data['role'] ?? 'user';
 
             $user->save();
 

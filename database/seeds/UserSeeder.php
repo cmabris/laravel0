@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'Pepe Pérez',
             'email' => 'pepe@mail.es',
             'password' => bcrypt('123456'),
-            'is_admin' => true,
+            'role' => 'admin',
         ]);
 
         $user->profile()->create([

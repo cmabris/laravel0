@@ -268,6 +268,29 @@ class UsersModuleTest extends TestCase
     }
 
     /** @test */
+    public function the_role_field_is_optional()
+    {
+        $this->post('usuarios', $this->getValidData([
+            'role' => null
+        ]))->assertRedirect('usuarios');
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'pepe@mail.es',
+            'role' => 'user',
+        ]);
+    }
+
+    /** @test */
+    public function the_role_field_must_be_valid()
+    {
+        $this->post('usuarios', $this->getValidData([
+            'role' => 'invalid-role'
+        ]))->assertSessionHasErrors('role');
+
+        $this->assertDatabaseEmpty('users');
+    }
+
+    /** @test */
     public function only_not_deleted_professions_can_be_selected()
     {
         $deletedProfession = factory(Profession::class)->create([
