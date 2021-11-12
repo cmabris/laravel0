@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Profession;
 use App\Skill;
 use App\User;
@@ -29,7 +30,6 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         $request->createUser();
-        //User::createUser($request->validated());
 
         return redirect()->route('users.index');
     }
@@ -48,32 +48,9 @@ class UserController extends Controller
         return $this->form('users.edit', $user);
     }
 
-    public function update(User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $data = request()->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => '',
-            'role' => '',
-            'bio' => '',
-            'twitter' => '',
-            'profession_id' => '',
-            'skills' => '',
-        ]);
-
-        if ($data['password'] != null) {
-            $data['password'] = bcrypt($data['password']);
-        } else {
-            unset($data['password']);
-        }
-
-        $user->fill($data);
-        $user->role = $data['role'];
-        $user->save();
-
-        $user->profile->update($data);
-
-        $user->skills()->sync($data['skills'] ?? []);
+        $request->updateUser($user);
 
         return redirect()->route('users.show', $user);
     }
