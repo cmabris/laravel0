@@ -23,12 +23,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $professions = Profession::orderBy('title', 'ASC')->get();
-        $skills = Skill::orderBy('name', 'ASC')->get();
-        $roles = trans('users.roles');
-        $user = new User;
-
-        return view('users.create', compact('user', 'professions', 'skills', 'roles'));
+        return $this->form('users.create', new User);
     }
 
     public function store(CreateUserRequest $request)
@@ -50,11 +45,7 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $professions = Profession::orderBy('title', 'ASC')->get();
-        $skills = Skill::orderBy('name', 'ASC')->get();
-        $roles = trans('users.roles');
-
-        return view('users.edit', compact('user', 'professions', 'skills', 'roles'));
+        return $this->form('users.edit', $user);
     }
 
     public function update(User $user)
@@ -63,6 +54,11 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => '',
+            'role' => '',
+            'bio' => '',
+            'twitter' => '',
+            'profession_id' => '',
+            'skills' => '',
         ]);
 
         if ($data['password'] != null) {
@@ -71,7 +67,13 @@ class UserController extends Controller
             unset($data['password']);
         }
 
-        $user->update($data);
+        $user->fill($data);
+        $user->role = $data['role'];
+        $user->save();
+
+        $user->profile->update($data);
+
+        $user->skills()->sync($data['skills'] ?? []);
 
         return redirect()->route('users.show', $user);
     }
@@ -81,5 +83,15 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index');
+    }
+
+    protected function form($view, User $user)
+    {
+        return view($view, [
+            'user' => $user,
+            'professions' => Profession::orderBy('title', 'ASC')->get(),
+            'skills' => Skill::orderBy('name', 'ASC')->get(),
+            'roles' => trans('users.roles')
+        ]);
     }
 }
