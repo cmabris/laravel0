@@ -16,7 +16,6 @@ class UserProfileTest extends TestCase
     protected $defaultData = [
         'name' => 'Pepe',
         'email' => 'pepe@mail.es',
-        'password' => '123456',
         'bio' => 'Programador de Laravel y Vue.js',
         'twitter' => 'https://twitter.com/pepe',
     ];
@@ -37,7 +36,6 @@ class UserProfileTest extends TestCase
         $response = $this->put('editar-perfil', [
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
-            'password' => '123456',
             'bio' => 'Programador de Laravel y Vue.js',
             'twitter' => 'https://twitter.com/pepe',
             'profession_id' => $newProfession->id,
@@ -45,16 +43,54 @@ class UserProfileTest extends TestCase
 
         $response->assertRedirect('editar-perfil');
 
-        $this->assertCredentials([
+        $this->assertDatabaseHas('users', [
             'name' => 'Pepe',
             'email' => 'pepe@mail.es',
-            'password' => '123456',
         ]);
 
         $this->assertDatabaseHas('user_profiles', [
             'bio' => 'Programador de Laravel y Vue.js',
             'twitter' => 'https://twitter.com/pepe',
             'profession_id' => $newProfession->id,
+        ]);
+    }
+
+    /** @test */
+    public function the_user_cannot_change_its_role()
+    {
+        $user = factory(User::class)->create([
+            'role' => 'user',
+        ]);
+
+        $response = $this->put('editar-perfil', $this->withData([
+            'role' => 'admin',
+        ]));
+
+        $response->assertRedirect();
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'role' => 'user',
+        ]);
+    }
+
+    /** @test */
+    public function the_user_cannot_change_its_password()
+    {
+        $user = factory(User::class)->create([
+            'password' => bcrypt('old123'),
+        ]);
+
+        $response = $this->put('editar-perfil', $this->withData([
+            'email' => 'pepe@mail.es',
+            'password' => bcrypt('new456'),
+        ]));
+
+        $response->assertRedirect();
+
+        $this->assertCredentials([
+            'email' => 'pepe@mail.es',
+            'password' => 'old123',
         ]);
     }
 }
