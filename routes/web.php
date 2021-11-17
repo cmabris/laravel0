@@ -16,4 +16,9 @@ Route::delete('usuarios/{user}', 'UserController@destroy')->name('users.destroy'
 Route::get('editar-perfil', 'ProfileController@edit');
 Route::put('editar-perfil', 'ProfileController@update');
 
+Route::get('profesiones', 'ProfessionController@index')->name('professions.index');
+Route::delete('profesiones/{profession}', 'ProfessionController@destroy');
+
+Route::get('habilidades', 'SkillController@index')->name('skills.index');
+
 Route::get('saludo/{name}/{nickname?}', 'WelcomeUserController');

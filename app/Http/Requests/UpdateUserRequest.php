@@ -55,7 +55,7 @@ class UpdateUserRequest extends FormRequest
         if ($this->password != null) {
             $user->password = bcrypt($this->password);
         }
-        
+
         $user->save();
 
         $user->profile->update([
