@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin;
 
 use App\User;
+use App\UserProfile;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,20 +13,10 @@ class DeleteUsersTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_deletes_a_user()
-    {
-        $user = factory(User::class)->create();
-
-        $this->delete('usuarios/' . $user->id)
-            ->assertRedirect('usuarios');
-
-        $this->assertDatabaseEmpty('users');
-    }
-
-    /** @test */
     public function it_sends_a_user_to_the_trash()
     {
         $user = factory(User::class)->create();
+        $user->profile()->save(factory(UserProfile::class)->make());
 
         $this->patch('usuarios/' . $user->id . '/papelera')
             ->assertRedirect('usuarios');
@@ -34,6 +25,9 @@ class DeleteUsersTest extends TestCase
         $this->assertSoftDeleted('users', [
             'id' => $user->id,
         ]);
+        $this->assertSoftDeleted('user_profiles', [
+            'user_id' => $user->id,
+        ]);
 
         //opción 2
         $user->refresh();
@@ -41,13 +35,28 @@ class DeleteUsersTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_delete_a_user_that_is_not_en_the_trash()
+    public function it_completely_deletes_a_user()
+    {
+        $user = factory(User::class)->create([
+            'deleted_at' => now(),
+        ]);
+        $user->profile()->save(factory(UserProfile::class)->make());
+
+        $this->delete('usuarios/' . $user->id)
+            ->assertRedirect('usuarios/papelera');
+
+        $this->assertDatabaseEmpty('users');
+    }
+
+    /** @test */
+    public function it_cannot_delete_a_user_that_is_not_in_the_trash()
     {
         $this->withExceptionHandling();
 
         $user = factory(User::class)->create([
             'deleted_at' => null,
         ]);
+        $user->profile()->save(factory(UserProfile::class)->make());
 
         $this->delete('usuarios/' . $user->id)
             ->assertStatus(404);

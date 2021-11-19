@@ -12,7 +12,7 @@ Route::put('usuarios/{user}', 'UserController@update')->name('users.update');
 Route::get('usuarios/papelera', 'UserController@trashed')->name('users.trashed');
 Route::get('usuarios/{user}', 'UserController@show')
     ->where('id', '[0-9]+')->name('users.show');
-Route::delete('usuarios/{user}', 'UserController@destroy')->name('users.destroy');
+Route::delete('usuarios/{id}', 'UserController@destroy')->name('users.destroy');
 Route::patch('usuarios/{user}/papelera', 'UserController@trash')->name('users.trash');
 
 

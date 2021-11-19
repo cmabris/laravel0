@@ -66,16 +66,19 @@ class UserController extends Controller
 
     public function trash(User $user)
     {
+        $user->profile()->delete();
         $user->delete();
 
         return redirect()->route('users.index');
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
+        $user = User::onlyTrashed()->where('id', $id)->firstOrFail();
+
         $user->forceDelete();
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.trashed');
     }
 
     protected function form($view, User $user)
