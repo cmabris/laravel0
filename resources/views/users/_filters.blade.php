@@ -1,20 +1,20 @@
 <form method="get" action="{{ route('users.index') }}">
-<!--    <div class="row row-filters">
+    <div class="row row-filters">
         <div class="col-12">
             <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                <label class="form-check-label" for="inlineRadio1">Todos</label>
+                <input type="radio" class="form-check-input" name="team" id="team_all" value="">
+                <label class="form-check-label" for="team_all">Todos</label>
             </div>
             <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                <label class="form-check-label" for="inlineRadio2">Solo activos</label>
+                <input type="radio" class="form-check-input" name="team" id="team_with_team" value="with_team">
+                <label class="form-check-label" for="team_with_team">Con equipo</label>
             </div>
             <div class="form-check form-check-inline">
-                <input type="radio" class="form-check-input" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                <label class="form-check-label" for="inlineRadio3">Solo inactivos</label>
+                <input type="radio" class="form-check-input" name="team" id="team_without_team" value="without_team">
+                <label class="form-check-label" for="team_without_team">Sin equipo</label>
             </div>
         </div>
-    </div>-->
+    </div>
     <div class="row row-filters">
         <div class="col-md-6">
             <div class="form-inline form-search">
