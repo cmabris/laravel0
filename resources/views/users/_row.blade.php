@@ -2,7 +2,7 @@
     <td rowspan="2">{{ $user->id }}</td>
     <th scope="row">
         {{ $user->name }}
-        <span class="note">Nombre de Empresa</span>
+        <span class="note text-muted">{{ $user->team->name }}</span>
     </th>
     <td>{{ $user->email }}</td>
     <td>{{ $user->role }}</td>

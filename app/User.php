@@ -42,6 +42,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Skill::class);
     }
 
+    public function team()
+    {
+        return $this->belongsTo(Team::class)->withDefault();
+    }
+
     public function isAdmin()
     {
         return $this->role === 'admin';
