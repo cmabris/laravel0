@@ -15,7 +15,13 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('created_at', 'DESC')->paginate();
+        $users = User::query()
+            ->when(request('search'), function ($query, $search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%");
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate();
 
         $title = 'Usuarios';
 
