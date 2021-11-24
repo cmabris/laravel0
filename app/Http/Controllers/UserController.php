@@ -23,12 +23,7 @@ class UserController extends Controller
                     $query->doesntHave('team');
                 }
             })
-            ->when(request('search'), function ($query, $search) {
-                $query->where(function ($query) use ($search) {
-                    $query->where('name', 'LIKE', "%{$search}%")
-                        ->orWhere('email', 'LIKE', "%{$search}%");
-                });
-            })
+            ->search(request('search'))
             ->orderBy('created_at', 'DESC')
             ->paginate();
 
