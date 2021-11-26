@@ -15,7 +15,8 @@ class ShowUsersTest extends TestCase
     public function it_displays_the_user_details()
     {
         $user = factory(User::class)->create([
-            'name' => 'José Martínez',
+            'first_name' => 'José',
+            'last_name' => 'Martínez',
         ]);
 
         $this->get('usuarios/' . $user->id)

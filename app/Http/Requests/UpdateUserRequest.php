@@ -27,7 +27,8 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->user->id,
             'password' => '',
             'role' => [Rule::in(Role::getList())],
@@ -47,7 +48,8 @@ class UpdateUserRequest extends FormRequest
     public function updateUser(User $user)
     {
         $user->fill([
-            'name' => $this->name,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
             'email' => $this->email,
             'role' => $this->role ?? 'user',
         ]);
