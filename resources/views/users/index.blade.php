@@ -8,7 +8,7 @@
         <a href="{{ route('users.create') }}" class="btn btn-primary">Nuevo usuario</a>
     </p>
 
-    @include('users._filters')
+    @includeWhen(isset($states), 'users._filters')
 
     @if( $users->count() )
         <div class="table-responsive-lg">

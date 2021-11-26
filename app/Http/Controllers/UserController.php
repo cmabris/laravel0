@@ -32,7 +32,14 @@ class UserController extends Controller
 
         $title = 'Usuarios';
 
-        return view('users.index')->with(compact('users', 'title'));
+        return view('users.index', [
+            'users' => $users,
+            'title' => $title,
+            'roles' => trans('users.filters.roles'),
+            'skills' => Skill::orderBy('name')->get(),
+            'states' => trans('users.filters.states'),
+            'checkedSkills' => collect(request('skills')),
+        ]);
     }
 
     public function trashed()
