@@ -5,6 +5,10 @@ return [
         'admin' => 'Admin',
         'user' => 'Usuario'
     ],
+    'states' => [
+        'active' => 'Activo',
+        'inactive' => 'Inactivo',
+    ],
     'filters' => [
         'roles' => [
             'all' => 'Rol',

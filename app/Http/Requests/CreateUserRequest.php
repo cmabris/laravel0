@@ -46,6 +46,9 @@ class CreateUserRequest extends FormRequest
                 'array',
                 Rule::exists('skills', 'id'),
             ],
+            'state' => [
+                Rule::in(['active', 'inactive'])
+            ]
         ];
     }
 
@@ -69,6 +72,7 @@ class CreateUserRequest extends FormRequest
                 'email' => $this->email,
                 'password' => bcrypt($this->password),
                 'role' => $this->role ?? 'user',
+                'state' => $this->state,
             ]);
 
             $user->profile()->create([

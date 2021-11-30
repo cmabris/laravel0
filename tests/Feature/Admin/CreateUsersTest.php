@@ -22,6 +22,7 @@ class CreateUsersTest extends TestCase
         'bio' => 'Programador de Laravel y Vue.js',
         'twitter' => 'https://twitter.com/pepe',
         'role' => 'user',
+        'state' => 'active',
     ];
 
     /** @test */
@@ -60,7 +61,8 @@ class CreateUsersTest extends TestCase
             'last_name' => 'Pérez',
             'email' => 'pepe@mail.es',
             'password' => '123456',
-            'role' => 'user'
+            'role' => 'user',
+            'active' => true,
         ]);
 
         $user = User::findByEmail('pepe@mail.es');
@@ -291,4 +293,27 @@ class CreateUsersTest extends TestCase
             ]))->assertSessionHasErrors(['profession_id']);
     }
 
+    /** @test */
+    public function the_state_must_be_valid()
+    {
+        $this->handleValidationExceptions();
+
+        $this->post('usuarios', $this->withData([
+                'state' => 'invalid-state'
+            ]))->assertSessionHasErrors(['state']);
+
+        $this->assertDatabaseEmpty('users');
+    }
+
+    /** @test */
+    public function the_state_is_required()
+    {
+        $this->handleValidationExceptions();
+
+        $this->post('usuarios', $this->withData([
+            'state' => null
+        ]))->assertSessionHasErrors(['state']);
+
+        $this->assertDatabaseEmpty('users');
+    }
 }

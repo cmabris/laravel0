@@ -42,6 +42,9 @@ class UpdateUserRequest extends FormRequest
                 'array',
                 Rule::exists('skills', 'id'),
             ],
+            'state' => [
+                Rule::in(['active', 'inactive']),
+            ]
         ];
     }
 
@@ -52,6 +55,7 @@ class UpdateUserRequest extends FormRequest
             'last_name' => $this->last_name,
             'email' => $this->email,
             'role' => $this->role ?? 'user',
+            'state' => $this->state,
         ]);
 
         if ($this->password != null) {
