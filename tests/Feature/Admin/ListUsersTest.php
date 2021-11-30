@@ -23,7 +23,7 @@ class ListUsersTest extends TestCase
 
         $this->get('usuarios')
             ->assertStatus(200)
-            ->assertSee('Usuarios')
+            ->assertSee(trans('users.title.index'))
             ->assertSee('Joel')
             ->assertSee('Ellie');
 
@@ -53,7 +53,7 @@ class ListUsersTest extends TestCase
 
         $this->get('usuarios/papelera')
             ->assertStatus(200)
-            ->assertSee('Listado de usuarios en la papelera')
+            ->assertSee(trans('users.title.trash'))
             ->assertSee('Joel')
             ->assertDontSee('Ellie');
     }

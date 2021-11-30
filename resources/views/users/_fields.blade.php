@@ -50,7 +50,7 @@
 
 <h5 class="mt-3">Rol</h5>
 
-@foreach($roles as $role => $name)
+@foreach(trans('users.roles') as $role => $name)
     <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="role" id="role_{{ $role }}" value="{{ $role }}"
                 {{ old('role', $user->role) == $role ? ' checked' : '' }}>

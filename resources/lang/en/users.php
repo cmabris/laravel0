@@ -12,13 +12,17 @@ return [
     'filters' => [
         'roles' => [
             'all' => 'Rol',
-            'admins' => 'Administradores',
-            'users' => 'Usuarios'
+            'admin' => 'Administradores',
+            'user' => 'Usuarios'
         ],
         'states' => [
             'all' => 'Todos',
             'active' => 'Solo activos',
             'inactive' => 'Solo inactivos',
         ],
-    ]
+    ],
+    'title' => [
+        'index' => 'Listado de usuarios',
+        'trash' => 'Papelera de usuarios'
+    ],
 ];
