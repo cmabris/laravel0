@@ -26,6 +26,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $casts = [
+        'active' => 'bool',
+    ];
+
     public function profession()
     {
         return $this->belongsTo(Profession::class);
@@ -68,6 +72,17 @@ class User extends Authenticatable
                 $query->where('name', 'LIKE', "%{$search}%");
             });
 
+    }
+
+    public function scopeByState($query, $state)
+    {
+        if ($state == 'active') {
+            return $query->where('active', true);
+        }
+
+        if ($state == 'inactive') {
+            return $query->where('active', false);
+        }
     }
 
     public function getNameAttribute()

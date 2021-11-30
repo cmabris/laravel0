@@ -42,7 +42,7 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body class="d-flex flex-column h-100">
 <header>
