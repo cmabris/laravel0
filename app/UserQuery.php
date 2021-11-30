@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserQuery extends Builder
 {
@@ -11,7 +13,28 @@ class UserQuery extends Builder
         return static::where('email', $email)->first();
     }
 
-    public function search($search)
+    public function filterBy(array $filters)
+    {
+        $rules = [
+            'search' => 'filled',
+            'state' => 'in:active,inactive',
+            'role' => 'in:user,admin',
+        ];
+
+        $validator = Validator::make($filters, $rules);
+
+        foreach ($validator->valid() as $name => $value) {
+            $method = 'filterBy' . Str::studly($name);
+
+            if (method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
+
+        return $this;
+    }
+
+    public function filterBySearch($search)
     {
         if (empty($search)) {
             return $this;
@@ -27,7 +50,7 @@ class UserQuery extends Builder
 
     }
 
-    public function byState($state)
+    public function filterByState($state)
     {
         if ($state == 'active') {
             return $this->where('active', true);
@@ -40,7 +63,7 @@ class UserQuery extends Builder
         return $this;
     }
 
-    public function byRole($role)
+    public function filterByRole($role)
     {
         if (in_array($role, ['admin', 'user'])) {
             return $this->where('role', $role);
