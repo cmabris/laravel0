@@ -24,7 +24,7 @@ class UserController extends Controller
                     $query->doesntHave('team');
                 }
             })
-            ->filterBy(request()->all(['state', 'role', 'search']))
+            ->filterBy(request()->only(['state', 'role', 'search']))
             ->orderBy('created_at', 'DESC')
             ->paginate();
 
