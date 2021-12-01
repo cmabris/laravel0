@@ -43,7 +43,7 @@
                     <div class="dropdown-menu skills-list">
                         @foreach($skills as $skill)
                             <div class="form-group form-check">
-                                <input name="skill[]" type="checkbox" class="form-check-input"
+                                <input name="skills[]" type="checkbox" class="form-check-input"
                                        id="skill_{{ $skill->id }}" value="{{ $skill->id }}"
                                        {{ $checkedSkills->contains($skill->id) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="skill_{{ $skill->id }}">{{ $skill->name }}</label>
