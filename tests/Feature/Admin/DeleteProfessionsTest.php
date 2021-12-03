@@ -32,9 +32,9 @@ class DeleteProfessionsTest extends TestCase
 
         $user = factory(User::class)->create();
         $profession = factory(Profession::class)->create();
-        $user->profile()->save(factory(UserProfile::class)->make([
+        $user->profile()->update([
             'profession_id' => $profession->id,
-        ]));
+        ]);
 
         $response = $this->delete('profesiones/' . $profession->id);
         $response->assertStatus(400);
