@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 abstract class QueryFilter
 {
-    private $valid;
+    protected $valid;
 
     abstract public function rules(): array;
 

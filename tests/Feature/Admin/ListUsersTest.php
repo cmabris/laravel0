@@ -168,4 +168,44 @@ class ListUsersTest extends TestCase
                 'jane.doe@example.com',
             ]);
     }
+
+    /** @test */
+    public function invalid_order_query_data_is_ignored_and_the_default_order_is_used_instead()
+    {
+        factory(User::class)->create(['email' => 'john.doe@example.com', 'created_at' => now()->subDays(2)]);
+        factory(User::class)->create(['email' => 'jane.doe@example.com', 'created_at' => now()->subDays(5)]);
+        factory(User::class)->create(['email' => 'richard.roe@example.com', 'created_at' => now()->subDays(3)]);
+
+        $this->get('usuarios?order=id&direction=asc')
+            ->assertSeeInOrder([
+                'john.doe@example.com',
+                'richard.roe@example.com',
+                'jane.doe@example.com',
+            ]);
+
+        $this->get('usuarios?order=column_invalid&direction=desc')
+            ->assertOk()
+            ->assertSeeInOrder([
+                'john.doe@example.com',
+                'richard.roe@example.com',
+                'jane.doe@example.com',
+            ]);
+    }
+
+    /** @test */
+    public function invalid_direction_query_data_is_ignored_and_the_default_direction_is_used_instead()
+    {
+        factory(User::class)->create(['email' => 'john.doe@example.com']);
+        factory(User::class)->create(['email' => 'jane.doe@example.com']);
+        factory(User::class)->create(['email' => 'richard.roe@example.com']);
+
+        $this->get('usuarios?order=email&direction=down')
+            ->assertOk()
+            ->assertSeeInOrder([
+                'jane.doe@example.com',
+                'john.doe@example.com',
+                'richard.roe@example.com',
+            ]);
+
+    }
 }
