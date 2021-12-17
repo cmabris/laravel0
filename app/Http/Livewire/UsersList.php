@@ -13,6 +13,11 @@ class UsersList extends Component
 {
     public $view;
     public $originalUrl;
+    public $search;
+
+    protected $queryString = [
+        'search' => ['except' => '']
+    ];
 
     public function mount($view, Request $request)
     {
@@ -34,7 +39,15 @@ class UsersList extends Component
             })
             ->filterBy($userFilter, array_merge(
                 ['trashed' => request()->routeIs('users.trashed')],
-                request()->only(['state', 'role', 'search', 'skills', 'from', 'to', 'order', 'direction'])
+                ['state' => request('state'),
+                 'role' => request('role'),
+                 'search' => $this->search,
+                 'skills' => request('skills'),
+                 'from' => request('from'),
+                 'to' => request('to'),
+                 'order' => request('order'),
+                 'direction' => request('direction')]
+
             ))
             ->orderByDesc('created_at')
             ->paginate();

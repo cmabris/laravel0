@@ -25,7 +25,7 @@
         <div class="col-md-6">
             <div class="form-inline form-search">
                 <div class="input-group">
-                    <input type="search" name="search" value="{{ request('search') }}" class="form-control form-control-sm" placeholder="Buscar...">
+                    <input wire:model.debounce.1000ms="search" type="search" name="search" value="{{ $search }}" class="form-control form-control-sm" placeholder="Buscar...">
                 </div>
 
                 <div class="btn-group">
