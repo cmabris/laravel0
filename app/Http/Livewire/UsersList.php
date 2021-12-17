@@ -6,15 +6,19 @@ use App\Skill;
 use App\Sortable;
 use App\User;
 use App\UserFilter;
+use Illuminate\Http\Request;
 use Livewire\Component;
 
 class UsersList extends Component
 {
-    protected $view;
+    public $view;
+    public $originalUrl;
 
-    public function mount($view)
+    public function mount($view, Request $request)
     {
         $this->view = $view;
+
+        $this->originalUrl = $request->url();
     }
 
     protected function getUsers(UserFilter $userFilter)
@@ -42,7 +46,7 @@ class UsersList extends Component
 
     public function render(UserFilter $userFilter)
     {
-        $sortable = new Sortable(request()->url());
+        $sortable = new Sortable($this->originalUrl);
 
         $this->view = 'index';
 
