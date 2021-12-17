@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('livewire-layout')
 
 @section('title', 'Usuarios')
 
@@ -12,6 +12,8 @@
             <a href="{{ route('users.index') }}" class="btn btn-outline-dark">Regresar al listado de usuarios</a>
         @endif
     </p>
+
+    @livewire('users-list')
 
     @includeWhen($view == 'index', 'users._filters')
 
