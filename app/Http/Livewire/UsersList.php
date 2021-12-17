@@ -14,9 +14,15 @@ class UsersList extends Component
     public $view;
     public $originalUrl;
     public $search;
+    public $state;
+    public $role;
+    public $skills = [];
 
     protected $queryString = [
-        'search' => ['except' => '']
+        'search' => ['except' => ''],
+        'state' => ['except' => 'all'],
+        'role' => ['except' => 'all'],
+        'skills' => [],
     ];
 
     public function mount($view, Request $request)
@@ -39,10 +45,10 @@ class UsersList extends Component
             })
             ->filterBy($userFilter, array_merge(
                 ['trashed' => request()->routeIs('users.trashed')],
-                ['state' => request('state'),
-                 'role' => request('role'),
+                ['state' => $this->state,
+                 'role' => $this->role,
                  'search' => $this->search,
-                 'skills' => request('skills'),
+                 'skills' => $this->skills,
                  'from' => request('from'),
                  'to' => request('to'),
                  'order' => request('order'),
@@ -66,7 +72,7 @@ class UsersList extends Component
         return view('livewire.users-list', [
             'users' => $this->getUsers($userFilter),
             'view' => $this->view,
-            'skills' => Skill::getList(),
+            'skillsList' => Skill::getList(),
             'checkedSkills' => collect(request('skills')),
             'sortable' => $sortable,
         ]);

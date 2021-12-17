@@ -14,8 +14,8 @@
         <div class="col-12">
             @foreach(trans('users.filters.states') as $value => $text)
                 <div class="form-check form-check-inline">
-                    <input type="radio" class="form-check-input" name="state" id="state_{{ $value ?: 'all' }}"
-                           value="{{ $value }}" {{ $value === request('state', '') ? 'checked' : '' }}>
+                    <input wire:model="state" type="radio" class="form-check-input" name="state" id="state_{{ $value ?: 'all' }}"
+                           value="{{ $value }}" {{ $value === $state ? 'checked' : '' }}>
                     <label class="form-check-label" for="state_{{ $value ?: 'all' }}">{{ $text }}</label>
                 </div>
             @endforeach
@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <select name="role" id="role" class="select-field">
+                    <select wire:model="role" name="role" id="role" class="select-field">
                         @foreach(trans('users.filters.roles') as $value => $text)
                             <option value="{{ $value }}" {{ request('role') === $value ? 'selected' : '' }}>{{ $text }}</option>
                         @endforeach
@@ -41,11 +41,11 @@
                         Habilidades
                     </button>
                     <div class="dropdown-menu skills-list">
-                        @foreach($skills as $skill)
+                        @foreach($skillsList as $skill)
                             <div class="form-group form-check">
-                                <input name="skills[]" type="checkbox" class="form-check-input"
+                                <input wire:model="skills" name="skills[]" type="checkbox" class="form-check-input"
                                        id="skill_{{ $skill->id }}" value="{{ $skill->id }}"
-                                       {{ $checkedSkills->contains($skill->id) ? 'checked' : '' }}>
+                                       {{ in_array($skill->id, $skills) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="skill_{{ $skill->id }}">{{ $skill->name }}</label>
                             </div>
                         @endforeach
