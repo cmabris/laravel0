@@ -1,6 +1,8 @@
 <div>
     @includeWhen($view == 'index', 'users._filters')
 
+    <p><a href="#" wire:click="$refresh()" class="btn btn-info">Recargar Componente</a></p>
+
     @if( $users->count() )
         <div class="table-responsive-lg">
             <table class="table table-sm">

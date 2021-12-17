@@ -17,32 +17,11 @@ class UserController extends Controller
 {
     public function index(UserFilter $userFilter, Sortable $sortable)
     {
-        $users = User::query()
-            ->with('team', 'skills', 'profile.profession')
-            ->when(request('team'), function ($query, $team) {
-                if ($team === 'with_team') {
-                    $query->has('team');
-                } elseif ($team === 'without_team') {
-                    $query->doesntHave('team');
-                }
-            })
-            ->filterBy($userFilter, array_merge(
-                ['trashed' => request()->routeIs('users.trashed')],
-                request()->only(['state', 'role', 'search', 'skills', 'from', 'to', 'order', 'direction'])
-            ))
-            ->orderByDesc('created_at')
-            ->paginate();
-
-        $users->appends($userFilter->valid());
-
-        $sortable->setCurrentOrder(request('order'), request('direction'));
+        //$sortable->setCurrentOrder(request('order'), request('direction'));
 
         return view('users.index', [
-            'users' => $users,
             'view' => request()->routeIs('users.trashed') ? 'trash' : 'index',
-            'skills' => Skill::orderBy('name')->get(),
-            'checkedSkills' => collect(request('skills')),
-            'sortable' => $sortable
+            //'sortable' => $sortable
         ]);
     }
 

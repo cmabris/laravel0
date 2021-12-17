@@ -15,59 +15,55 @@ class FilterUsersTest extends TestCase
     /** @test */
     public function filter_users_by_state_active()
     {
-        $activeUser = factory(User::class)->create();
-        $inactiveUser = factory(User::class)->state('inactive')->create();
+        factory(User::class)->create(['first_name' => 'Joel']);
+        factory(User::class)->state('inactive')->create(['first_name' => 'Ellie']);
 
         $response = $this->get('usuarios?state=active');
 
-        $response->assertViewCollection('users')
-            ->contains($activeUser)
-            ->notContains($inactiveUser);
+        $response->assertSee('Joel')
+            ->assertDontSee('Ellie');
     }
 
     /** @test */
     public function filter_users_by_state_inactive()
     {
-        $activeUser = factory(User::class)->create();
-        $inactiveUser = factory(User::class)->state('inactive')->create();
+        factory(User::class)->create(['first_name' => 'Joel']);
+        factory(User::class)->state('inactive')->create(['first_name' => 'Ellie']);
 
         $response = $this->get('usuarios?state=inactive');
 
-        $response->assertViewCollection('users')
-            ->contains($inactiveUser)
-            ->notContains($activeUser);
+        $response->assertSee('Ellie')
+            ->assertDontSee('Joel');
     }
 
     /** @test */
     public function filter_users_by_role_admin()
     {
-        $admin = factory(User::class)->create(['role' => 'admin']);
+        factory(User::class)->create(['first_name' => 'Joel', 'role' => 'admin']);
 
-        $user = factory(User::class)->create(['role' => 'user']);
+        factory(User::class)->create(['first_name' => 'Ellie', 'role' => 'user']);
 
         $response = $this->get('usuarios?role=admin');
 
         $response->assertStatus(200);
 
-        $response->assertViewCollection('users')
-            ->contains($admin)
-            ->notContains($user);
+        $response->assertSee('Joel')
+            ->assertDontSee('Ellie');
     }
 
     /** @test */
     public function filter_users_by_role_user()
     {
-        $admin = factory(User::class)->create(['role' => 'admin']);
+        factory(User::class)->create(['first_name' => 'Joel', 'role' => 'admin']);
 
-        $user = factory(User::class)->create(['role' => 'user']);
+        factory(User::class)->create(['first_name' => 'Ellie', 'role' => 'user']);
 
         $response = $this->get('usuarios?role=user');
 
         $response->assertStatus(200);
 
-        $response->assertViewCollection('users')
-            ->contains($user)
-            ->notContains($admin);
+        $response->assertSee('Ellie')
+            ->assertDontSee('Joel');
     }
 
     /** @test */
@@ -76,41 +72,44 @@ class FilterUsersTest extends TestCase
         $php = factory(Skill::class)->create(['name' => 'php']);
         $css = factory(Skill::class)->create(['name' => 'css']);
 
-        $backendDev = factory(User::class)->create();
+        $backendDev = factory(User::class)->create(['first_name' => 'Joel']);
         $backendDev->skills()->attach($php);
 
-        $fullStackDev = factory(User::class)->create();
+        $fullStackDev = factory(User::class)->create(['first_name' => 'Ellie']);
         $fullStackDev->skills()->attach([$php->id, $css->id]);
 
-        $frontendDev = factory(User::class)->create();
+        $frontendDev = factory(User::class)->create(['first_name' => 'Marlene']);
         $frontendDev->skills()->attach($css);
 
         $response = $this->get("usuarios?skills[0]={$php->id}&skills[1]={$css->id}");
 
         $response->assertStatus(200);
 
-        $response->assertViewCollection('users')
-            ->contains($fullStackDev)
-            ->notContains($frontendDev)
-            ->notContains($backendDev);
+        $response->assertSee('Ellie')
+            ->assertDontSee('Joel')
+            ->assertDontSee('Marlene');
     }
 
     /** @test */
     public function filter_users_created_from_date()
     {
-        $newestUser = factory(User::class)->create([
+        factory(User::class)->create([
+            'first_name' => 'Joel',
             'created_at' => '2018-10-02 12:00:00',
         ]);
 
-        $oldestUser = factory(User::class)->create([
+        factory(User::class)->create([
+            'first_name' => 'Ellie',
             'created_at' => '2018-09-29 12:00:00',
         ]);
 
-        $newUser = factory(User::class)->create([
+        factory(User::class)->create([
+            'first_name' => 'Marlene',
             'created_at' => '2018-10-01 00:00:00',
         ]);
 
-        $oldUser = factory(User::class)->create([
+        factory(User::class)->create([
+            'first_name' => 'John',
             'created_at' => '2018-09-30 23:59:59',
         ]);
 
@@ -118,29 +117,32 @@ class FilterUsersTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertViewCollection('users')
-            ->contains($newUser)
-            ->contains($newestUser)
-            ->notContains($oldUser)
-            ->notContains($oldestUser);
+        $response->assertSee('Joel')
+            ->assertSee('Marlene')
+            ->assertDontSee('Ellie')
+            ->assertDontSee('John');
     }
 
     /** @test */
     public function filter_users_created_to_date()
     {
-        $newestUser = factory(User::class)->create([
+        factory(User::class)->create([
+            'first_name' => 'Joel',
             'created_at' => '2018-10-02 12:00:00',
         ]);
 
-        $oldestUser = factory(User::class)->create([
+        factory(User::class)->create([
+            'first_name' => 'Ellie',
             'created_at' => '2018-09-29 12:00:00',
         ]);
 
-        $newUser = factory(User::class)->create([
+        factory(User::class)->create([
+            'first_name' => 'Marlene',
             'created_at' => '2018-10-01 00:00:00',
         ]);
 
-        $oldUser = factory(User::class)->create([
+        factory(User::class)->create([
+            'first_name' => 'John',
             'created_at' => '2018-09-30 23:59:59',
         ]);
 
@@ -148,11 +150,10 @@ class FilterUsersTest extends TestCase
 
         $response->assertOk();
 
-        $response->assertViewCollection('users')
-            ->contains($oldestUser)
-            ->contains($oldUser)
-            ->notContains($newestUser)
-            ->notContains($newUser);
+        $response->assertSee('Ellie')
+            ->assertSee('John')
+            ->assertDontSee('Joel')
+            ->assertDontSee('Marlene');
     }
 
 

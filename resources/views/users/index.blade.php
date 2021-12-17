@@ -13,6 +13,6 @@
         @endif
     </p>
 
-    @livewire('users-list', compact(['users', 'view', 'skills', 'checkedSkills', 'sortable']))
+    @livewire('users-list', compact(['view']))
 
 @endsection
